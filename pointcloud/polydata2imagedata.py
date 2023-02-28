@@ -16,6 +16,11 @@ def read_mesh_file(filename):
         reader = vtk.vtkSTLReader()
     elif filename.lower().endswith(".ply"):
         reader = vtk.vtkPLYReader()
+    elif filename.lower().endswith(".vtk"):
+        # reader = vtk.vtkStructuredPointsReader()
+        # reader.ReadAllVectorsOn()
+        # reader.ReadAllScalarsOn()
+        reader = vtk.vtkGenericDataObjectReader()
     else:
         raise ValueError("Only reads STL and PLY")
     reader.SetFileName(filename)
@@ -86,8 +91,8 @@ def save(imagedata, filename):
 def main():
     # input_filename = sys.argv[1]
     # output_filename = sys.argv[2]
-    input_filename = R"pointcloud/pcdata/RGBPoints.ply"
-    output_filename = R"pointcloud/pcdata/RGBPoints.vti"
+    input_filename = R"pointcloud/pcdata/mesh.vtk"
+    output_filename = R"pointcloud/pcdata/mesh.vti"
 
     polydata = read_mesh_file(input_filename)
     imagedata = polydata_to_imagedata(polydata)

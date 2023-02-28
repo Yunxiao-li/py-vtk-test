@@ -19,6 +19,28 @@ from vtkmodules.vtkRenderingCore import (
 from vtkmodules.vtkInteractionStyle import vtkInteractorStyleMultiTouchCamera
 import vtkmodules.vtkRenderingOpenGL2
 import numpy as np
+import vtk
+
+
+def actor_mesh(filename):
+    if filename.lower().endswith(".stl"):
+        reader = vtk.vtkSTLReader()
+    elif filename.lower().endswith(".ply"):
+        reader = vtk.vtkPLYReader()
+    elif filename.lower().endswith(".vtk"):
+        reader = vtk.vtkStructuredPointsReader()
+        reader.ReadAllVectorsOn()
+        reader.ReadAllScalarsOn()
+    else:
+        raise ValueError("Only reads STL and PLY")
+    reader.SetFileName(filename)
+    reader.Update()
+    mapper = vtkPolyDataMapper()
+    mapper.SetInputData(reader.GetOutput())
+    actor = vtkActor()
+    actor.SetMapper(mapper)
+    return actor
+
 
 def actor_ply(ply_file):
     points = vtkPoints()
@@ -102,10 +124,11 @@ def show_actor(actorlist):
 
 if __name__ == '__main__':
     # 读取 txt 文档
-    file_path1 = r"pointcloud/pcdata/DepthPoints.ply"
-    file_color = r"pointcloud/pcdata/RGBPoints.ply"
+    file_path1 = R"pointcloud/pcdata/DepthPoints.ply"
+    file_color = R"pointcloud/pcdata/RGBPoints.ply"
     actor = actor_ply(file_path1)
-    actor_color = actor_plf_color(file_color)
+    # actor_color = actor_plf_color(file_color)
+    actor_color = actor_mesh(file_color)
     # actor.GetProperty().SetColor(1, 0, 0)
     show_actor([actor_color])
     
