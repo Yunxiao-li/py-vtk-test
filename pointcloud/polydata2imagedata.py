@@ -155,17 +155,26 @@ def save(imagedata, filename):
     writer.Write()
 
 
+def savemetadata(imagedata, filename):
+    writer = vtk.vtkMetaImageWriter()
+    writer.SetFileName(filename + ".mhd")
+    writer.SetRAWFileName(filename + ".raw")
+    writer.SetInputData(imagedata)
+    writer.Write()
+
+
 def main():
     # input_filename = sys.argv[1]
     # output_filename = sys.argv[2]
-    input_filename = R"pointcloud/pcdata/mesh.vtk"
-    output_filename = R"pointcloud/pcdata/mesh10_pad.vti"
+    input_filename = R"data/screw.stl"
+    output_filename = R"mesh.mhd"
 
     polydata = read_mesh_file(input_filename)
-    spacing = [10, 10, 10]
+    spacing = [0.2, 0.2, 0.2]
     imagedata = polydata_2_imagedata(polydata, spacing)
     # imagedata = polydata_to_imagedata(polydata)
-    save(imagedata, output_filename)
+    # save(imagedata, output_filename)
+    savemetadata(imagedata, "data/screw")
 
 
 if __name__ == "__main__":

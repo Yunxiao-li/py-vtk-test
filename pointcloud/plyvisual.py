@@ -126,9 +126,11 @@ if __name__ == '__main__':
     # 读取 txt 文档
     file_path1 = R"pointcloud/pcdata/DepthPoints.ply"
     file_color = R"pointcloud/pcdata/RGBPoints.ply"
+    file_stl = R"pointcloud/pcdata/noflyzone.stl"
     actor = actor_ply(file_path1)
     # actor_color = actor_plf_color(file_color)
     actor_color = actor_mesh(file_color)
+    actor_stl = actor_mesh(file_stl)
     # actor.GetProperty().SetColor(1, 0, 0)
-    show_actor([actor_color])
+    show_actor([actor_stl])
     
